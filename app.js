@@ -151,10 +151,12 @@ function loadScript(src) {
 }
 
 // Bei „Alle Cookies blockieren“ wirft schon der Zugriff auf localStorage – dann eben ohne Speichern weiter
+// /quiz/ und /klassik/ liegen auf derselben github.io-Adresse und teilen sich sonst den Speicher
+const NS = k => CLASSIC ? 'klassik-' + k : k;
 const store = {
-  get(k, area) { try { return JSON.parse((area || localStorage).getItem(k)); } catch (e) { return null; } },
-  set(k, v, area) { try { (area || localStorage).setItem(k, JSON.stringify(v)); } catch (e) { /* voll/gesperrt */ } },
-  del(k, area) { try { (area || localStorage).removeItem(k); } catch (e) { /* egal */ } }
+  get(k, area) { try { return JSON.parse((area || localStorage).getItem(NS(k))); } catch (e) { return null; } },
+  set(k, v, area) { try { (area || localStorage).setItem(NS(k), JSON.stringify(v)); } catch (e) { /* voll/gesperrt */ } },
+  del(k, area) { try { (area || localStorage).removeItem(NS(k)); } catch (e) { /* egal */ } }
 };
 
 function rid(n = 10) {
@@ -1802,7 +1804,8 @@ const Host = {
         if (!(st.phase === 'question' && this.closing)) Sound.phaseMusic(st.phase);
         // Show-Intro und Siegerehrung starten ihren Ton selbst – nach „Ton an“ hier nachholen
         if (st.phase === 'show') Sound.playShow(this.settings.introStart || 0, this.settings.introHit ?? 3, () => {});
-        if (st.phase === 'end') Winner.play(this.settings.winnerStart ?? 240, ok => { if (ok === false && Sound.on) Sound.fanfare(); })
+        if (st.phase === 'end' && CLASSIC) Sound.fanfare();
+        else if (st.phase === 'end') Winner.play(this.settings.winnerStart ?? 240, ok => { if (ok === false && Sound.on) Sound.fanfare(); })
           .then(ok => { if (ok === false) Sound.fanfare(); });
       }
       soundBtn.replaceChildren(icon(Sound.on ? 'sound' : 'mute'));

@@ -15,7 +15,7 @@ window.QUIZ_CONFIG = {
 
   // Öffentliche Adresse der App, z. B. "https://deinname.github.io/tutoriums-quiz/".
   // Daraus wird der QR-Code gebaut. Leer lassen = die Adresse, unter der du die Seite gerade geöffnet hast.
-  publicUrl: "https://jakobeichhornberllinoo.github.io/klassik/",
+  publicUrl: "https://jakobeichhornberllinoo.github.io/tutoriumquiz/",
 
   // Klassik-Version: kein Show-Intro, keine eigenen MP3s – nur die eingebauten Songs und die Fanfare
   classic: true
